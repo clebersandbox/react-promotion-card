@@ -21,7 +21,7 @@ const PromotionForm = ({ id }) => {
         setValues(res.data);
       });
     }
-  }, []);
+  }, [id]);
 
   function onChange(ev) {
     const { name, value } = ev.target;

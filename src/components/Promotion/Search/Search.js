@@ -2,13 +2,28 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+import useApi from '../../components/utils/useApi';
 import './Search.css';
 import PromotionList from '../../../components/Promotion/List/List';
 
 const PromotionSearch = () => {
   const [promotions, setPromotions] = useState([]);
-
   const [search, setSearch] = useState('');
+  const [load, loadInfo] = useApi({
+    url: 'http://localhost:3000/promotions?',
+    method: 'get',
+    params: {
+      _embed: comments,
+      _order: desc,
+      _sort: id,
+      title_like: search || undefined
+    },
+    onCompleted: () => {
+      setPromotions(res.data);
+    }
+  });
+
+  console.log(loadInfo);
 
   useEffect(() => {
     const params = {};
@@ -18,14 +33,15 @@ const PromotionSearch = () => {
     }
 
     setPromotions([]);
-    axios
-      .get(
-        'http://localhost:3000/promotions?_embed=comments&_order=desc&_sort=id',
-        { params }
-      )
-      .then(res => {
-        setPromotions(res.data);
-      });
+    load();
+    // axios
+    //   .get(
+    //     'http://localhost:3000/promotions?_embed=comments&_order=desc&_sort=id',
+    //     { params }
+    //   )
+    //   .then(res => {
+    //     setPromotions(res.data);
+    //   });
   }, [search]);
 
   return (
